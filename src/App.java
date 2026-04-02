@@ -5,23 +5,36 @@ class BankAccount {
     String name;
     double balance;
     double dividendRate; // example: 0.05 = 5%
+    String[] transacHistory;
 
     // Constructor
     public BankAccount(String name, double initialDeposit) {
         this.name = name;
         this.balance = initialDeposit;
         this.dividendRate = 0.0;
+        this.transacHistory = new String[90]; //for storage of 90 history
+    }
+
+    int idx = 0;
+
+    public double getBalance()
+    {
+        return this.balance;
     }
 
     // Deposit money
     public void deposit(double amount) {
         balance = balance + amount;
+        transacHistory[idx] = "Deposit"; 
+        idx ++;
         // too simple - need refinement
     }
 
     // Withdraw money
     public void withdraw(double amount) {
         balance = balance - amount;
+        transacHistory[idx] = "Withdraw";
+        idx ++;
         // too simple - need refinement
     }
 
@@ -34,6 +47,14 @@ class BankAccount {
     public void applyDividend() {
         double dividend = calculateDividend();
         balance = balance + dividend;
+        transacHistory[idx] = "Add devident"; 
+        idx ++;
+    }
+
+    public void printTransaction()
+    {
+        for (String elem:transacHistory)
+            System.out.println(elem);
     }
 
     // Set dividend rate
@@ -55,12 +76,83 @@ class BankAccount {
 public class App {
     public static void main(String[] args) {
 
+        int[] finMark = {88,75,60,80,90,95,77,91,77,80};
+        // finMark[0] = 88
+
+        for (int elem:finMark) // elem is name, any name also can
+        {
+            System.out.println(elem);
+        }
         Scanner sc = new Scanner(System.in);
+
+        BankAccount acc1 = new BankAccount("ALI", 1000.0);
+        BankAccount acc2 = new BankAccount("BALI", 1500.0);
+        BankAccount acc3 = new BankAccount("CALI", 1000.0);
+        BankAccount acc4 = new BankAccount("DALI", 1500.0);
+        BankAccount acc5 = new BankAccount("ELI", 1000.0);
+
+        System.out.println(acc1);// beginning memory address
+        System.out.println(acc2);
+        System.out.println(acc3);
+
+        acc3.deposit(575);
+        acc3.applyDividend();
+        acc3.setDividendRate(0.125);
+        acc3.printObjectState();
+
+        BankAccount[]accArr;
+        accArr = new BankAccount[7];
+        System.out.println(accArr);
+        System.out.println(accArr[0]);
+        System.out.println(accArr[1]);
+        System.out.println(accArr[2]);
+        System.out.println(accArr[3]);
+        System.out.println(accArr[4]);
+
+        accArr[0] = acc1;
+        accArr[1] = acc2;
+        accArr[2] = acc3;
+        accArr[3] = new BankAccount("SITI", 500.0);
+        accArr[4] = new BankAccount("SIVA", 100.00);
+        accArr[5] = acc4;
+        accArr[6] = acc5;
+
+        accArr[3].deposit(700);
+        accArr[4].withdraw(50);
+
+        for(int i = 0; i < accArr.length; i++)
+        {
+            //print info of all accs
+            accArr[i].printObjectState();
+        }
+
+        // end of year 2026, apply divid 7.5% to all accs
+        for (int i = 0; i < 7; i++)
+        {
+            accArr[i].setDividendRate(0.075);
+            accArr[i].applyDividend();
+            accArr[i].printObjectState();
+        }
+
+        BankAccount highest = accArr[0]; // using enhanced loop
+        for (BankAccount elem:accArr)
+        {
+            if (elem.getBalance() > highest.getBalance())
+            {
+                highest = elem;
+            }
+            System.out.println("Acc with highest balance is ");
+            highest.printObjectState();
+        }
 
         System.out.println("===== BANK ACCOUNT SYSTEM =====");
 
+        sc.close();
+    }
+}
+
         // Input
-        System.out.print("Enter account holder name: ");
+/*         System.out.print("Enter account holder name: ");
         String name = sc.nextLine();
 
         System.out.print("Enter initial deposit: RM ");
@@ -100,6 +192,7 @@ public class App {
         sc.close();
     }
 }
+*/
 
 /*
  * import java.util.Scanner;
